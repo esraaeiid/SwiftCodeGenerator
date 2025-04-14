@@ -5,17 +5,41 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftGenerator",
+    platforms: [
+         .macOS(.v12) 
+     ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
+        .executable(
+                name: "SwiftGeneratorExecutable",
+                targets: ["SwiftGeneratorExecutable"]
+            ),
+        
         .library(
             name: "SwiftGenerator",
             targets: ["SwiftGenerator"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/hummingbird-project/hummingbird-mustache.git", from: "1.0.3"),
+        .package(url: "https://github.com/apple/swift-syntax.git", from: "510.0.2"),
+        .package(url: "https://github.com/apple/swift-openapi-generator", from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-openapi-runtime", from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-openapi-urlsession", from: "1.0.0"),
+    ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "SwiftGenerator"),
+        .target(name: "SwiftGenerator" , dependencies: [
+            .product(name: "HummingbirdMustache", package: "hummingbird-mustache"),
+            .product(name: "SwiftSyntax", package: "swift-syntax"),
+            .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
+            .product(name: "OpenAPIGenerator", package: "swift-openapi-generator"),
+            .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
+            .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
+        ]),
+        .executableTarget(
+            name: "SwiftGeneratorExecutable",
+            dependencies: [
+                .byName(name: "SwiftGenerator"),
+            ]
+        ),
         .testTarget(
             name: "SwiftGeneratorTests",
             dependencies: ["SwiftGenerator"]
