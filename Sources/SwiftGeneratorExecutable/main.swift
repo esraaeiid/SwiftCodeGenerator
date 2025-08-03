@@ -25,5 +25,14 @@ let generator = SwiftGenerator()
 // Option 2: Generate using Hummingbird Mustache (template-based approach)
 // This method uses Mustache templates to generate Swift code
 // Currently active - generates User.swift file in Generated/ directory
-generator.generateWithSwiftMustache()
+//generator.generateWithSwiftMustache()
+
+// Option 3: Generate using SwiftSyntax with shared file helper
+// This demonstrates consistency in file writing across different generators
+//generator.generateSwiftSyntaxWithSharedHelper()
+
+// Option 4: Generate all structs at once (batch processing)
+// This generates multiple files using different approaches
+generator.generateAllStructs()
+
 
