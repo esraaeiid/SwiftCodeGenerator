@@ -9,4 +9,6 @@
 import SwiftGenerator
 
 let generator = SwiftGenerator()
-generator.generateWithSwiftSyntax()
+//generator.generateWithSwiftSyntax()
+
+generator.generateWithSwiftMustache()

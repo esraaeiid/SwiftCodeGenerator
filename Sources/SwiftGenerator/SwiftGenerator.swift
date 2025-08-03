@@ -8,6 +8,24 @@ import HummingbirdMustache
 public struct SwiftGenerator {
     public init() {}
     
+    // MARK: - File Writing Helpers
+    private func writeToFile(_ content: String, filename: String, directory: String = "Generated") throws {
+        let fileManager = FileManager.default
+        let currentDirectory = fileManager.currentDirectoryPath
+        let outputDirectory = "\(currentDirectory)/\(directory)"
+        
+        // Create directory if it doesn't exist
+        if !fileManager.fileExists(atPath: outputDirectory) {
+            try fileManager.createDirectory(atPath: outputDirectory, withIntermediateDirectories: true)
+        }
+        
+        let filePath = "\(outputDirectory)/\(filename)"
+        try content.write(toFile: filePath, atomically: true, encoding: .utf8)
+        print("✅ Generated file: \(filePath)")
+    }
+    
+    
+    
     //MARK: - Hummingbird Mustache
     public func generateWithSwiftMustache() {
         let data: [String: Any] = [
@@ -35,7 +53,12 @@ public struct SwiftGenerator {
         ]
 
         let generatedCode = Templates.generateStruct(from: data)
-        print(generatedCode)
+        
+        do {
+            try writeToFile(generatedCode, filename: "User.swift")
+        } catch {
+            print("❌ Error writing file: \(error)")
+        }
     }
 
     //MARK: - Swift Syntax
