@@ -5,46 +5,6 @@ import Foundation
 import HummingbirdMustache
 
 
-// MARK: - Models
-public struct Property {
-    let variable: String
-    let type: String
-    let isOptional: Bool
-    let isArray: Bool
-    
-    public init(variable: String, type: String, isOptional: Bool = false, isArray: Bool = false) {
-        self.variable = variable
-        self.type = type
-        self.isOptional = isOptional
-        self.isArray = isArray
-    }
-}
-
-public struct StructData {
-    let name: String
-    let properties: [Property]
-    
-    public init(name: String, properties: [Property]) {
-        self.name = name
-        self.properties = properties
-    }
-    
-    // Convert to dictionary for Mustache template
-    func toDictionary() -> [String: Any] {
-        return [
-            "name": name,
-            "properties": properties.map { property in
-                [
-                    "variable": property.variable,
-                    "type": property.type,
-                    "isOptional": property.isOptional,
-                    "isArray": property.isArray
-                ]
-            }
-        ]
-    }
-}
-
 public struct SwiftGenerator {
     public init() {}
     
@@ -55,10 +15,12 @@ public struct SwiftGenerator {
         let outputDirectory = "\(currentDirectory)/\(directory)"
         
         // Create directory if it doesn't exist
+        // This ensures the output directory exists before writing files
         if !fileManager.fileExists(atPath: outputDirectory) {
             try fileManager.createDirectory(atPath: outputDirectory, withIntermediateDirectories: true)
         }
         
+        // Write the generated code to the file
         let filePath = "\(outputDirectory)/\(filename)"
         try content.write(toFile: filePath, atomically: true, encoding: .utf8)
         print("✅ Generated file: \(filePath)")
@@ -66,17 +28,12 @@ public struct SwiftGenerator {
     
     //MARK: - Hummingbird Mustache
     public func generateWithSwiftMustache() {
-        let structData = StructData(
-            name: "User",
-            properties: [
-                Property(variable: "id", type: "Int"),
-                Property(variable: "name", type: "String", isOptional: true),
-                Property(variable: "email", type: "String", isArray: true)
-            ]
-        )
+        let structData = StructData.user()
 
+        // Generate Swift code using the Mustache template
         let generatedCode = Templates.generateStruct(from: structData.toDictionary())
         
+        // Write the generated code to a file
         do {
             try writeToFile(generatedCode, filename: "User.swift")
         } catch {

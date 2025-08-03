@@ -1,4 +1,17 @@
+# OpenAPI Generator Configuration
+# This file configures what types of Swift code will be generated from the OpenAPI specification
+# The generator uses this configuration to determine which components to create
+
+# Generation Options
+# Specify which components should be generated from the OpenAPI specification
 generate:
+  # Generate Swift structs and enums for API models
+  # This creates type-safe data models that match the API schema
+  # Example: User struct, ErrorResponse enum, etc.
   - types
+  
+  # Generate API client code for making HTTP requests
+  # This creates a client class with methods for each API endpoint
+  # Example: UsersAPI class with fetchUsers() method
   - client
 
