@@ -5,6 +5,46 @@ import Foundation
 import HummingbirdMustache
 
 
+// MARK: - Models
+public struct Property {
+    let variable: String
+    let type: String
+    let isOptional: Bool
+    let isArray: Bool
+    
+    public init(variable: String, type: String, isOptional: Bool = false, isArray: Bool = false) {
+        self.variable = variable
+        self.type = type
+        self.isOptional = isOptional
+        self.isArray = isArray
+    }
+}
+
+public struct StructData {
+    let name: String
+    let properties: [Property]
+    
+    public init(name: String, properties: [Property]) {
+        self.name = name
+        self.properties = properties
+    }
+    
+    // Convert to dictionary for Mustache template
+    func toDictionary() -> [String: Any] {
+        return [
+            "name": name,
+            "properties": properties.map { property in
+                [
+                    "variable": property.variable,
+                    "type": property.type,
+                    "isOptional": property.isOptional,
+                    "isArray": property.isArray
+                ]
+            }
+        ]
+    }
+}
+
 public struct SwiftGenerator {
     public init() {}
     
@@ -24,35 +64,18 @@ public struct SwiftGenerator {
         print("✅ Generated file: \(filePath)")
     }
     
-    
-    
     //MARK: - Hummingbird Mustache
     public func generateWithSwiftMustache() {
-        let data: [String: Any] = [
-            "name": "User",
-            "properties": [
-                [
-                    "variable": "id",
-                    "type": "Int",
-                    "isOptional": false,
-                    "isArray": false
-                ],
-                [
-                    "variable": "name",
-                    "type": "String",
-                    "isOptional": true,
-                    "isArray": false
-                ],
-                [
-                    "variable": "email",
-                    "type": "String",
-                    "isOptional": false,
-                    "isArray": true
-                ]
+        let structData = StructData(
+            name: "User",
+            properties: [
+                Property(variable: "id", type: "Int"),
+                Property(variable: "name", type: "String", isOptional: true),
+                Property(variable: "email", type: "String", isArray: true)
             ]
-        ]
+        )
 
-        let generatedCode = Templates.generateStruct(from: data)
+        let generatedCode = Templates.generateStruct(from: structData.toDictionary())
         
         do {
             try writeToFile(generatedCode, filename: "User.swift")
