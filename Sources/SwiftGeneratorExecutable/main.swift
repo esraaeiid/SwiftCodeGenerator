@@ -24,7 +24,7 @@ let generator = SwiftGenerator()
 
 // Option 2: Generate using Hummingbird Mustache (template-based approach)
 // This method uses Mustache templates to generate Swift code
-// Currently active - generates User.swift file in Generated/ directory
+// Generates User.swift file in Generated/ directory
 //generator.generateWithSwiftMustache()
 
 // Option 3: Generate using SwiftSyntax with shared file helper
