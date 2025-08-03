@@ -18,14 +18,14 @@ let generator = SwiftGenerator()
 // MARK: - Code Generation Options
 // Uncomment the method you want to use for code generation:
 
-// Option 1: Generate using Swift Syntax (programmatic approach)
-// This method uses Apple's SwiftSyntax library to build Swift code structures
-//generator.generateWithSwiftSyntax()
-
-// Option 2: Generate using Hummingbird Mustache (template-based approach)
+// Option 1: Generate using Hummingbird Mustache (template-based approach)
 // This method uses Mustache templates to generate Swift code
 // Generates User.swift file in Generated/ directory
 //generator.generateWithSwiftMustache()
+
+// Option 2: Generate using Swift Syntax (programmatic approach)
+// This method uses Apple's SwiftSyntax library to build Swift code structures
+//generator.generateWithSwiftSyntax()
 
 // Option 3: Generate using SwiftSyntax with shared file helper
 // This demonstrates consistency in file writing across different generators
